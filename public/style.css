@@ -1,0 +1,23 @@
+.grey-line {
+    box-shadow: 0 1px 0px grey;
+  }
+
+.image-box > img {
+  width: 300px;
+}
+
+.order-count {
+  width: 45px;
+}
+
+.droppy {
+  display: inline-block;
+}
+
+.drop-pop {
+  display: none;
+}
+  
+.droppy:hover  .drop-pop{
+  display: inline-block;
+}
