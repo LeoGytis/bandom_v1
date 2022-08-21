@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CountryController as Country;
+use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\HotelController as Hotel;
 use App\Http\Controllers\OrderController;
+use App\Models\Restaurant;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,15 +25,15 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// ========================== Country ==========================
-Route::group(['prefix' => 'countries'], function () {
-    Route::get('', [Country::class, 'index'])->name('country.index')->middleware('rp:user');
-    Route::get('create', [Country::class, 'create'])->name('country.create')->middleware('rp:admin');
-    Route::post('store', [Country::class, 'store'])->name('country.store')->middleware('rp:admin');
-    Route::get('edit/{country}', [Country::class, 'edit'])->name('country.edit')->middleware('rp:admin');
-    Route::put('update/{country}', [Country::class, 'update'])->name('country.update')->middleware('rp:admin');
-    Route::post('delete/{country}', [Country::class, 'destroy'])->name('country.destroy')->middleware('rp:admin');
-    Route::get('show/{country}', [Country::class, 'show'])->name('country.show')->middleware('rp:user');
+// ========================== Restaurant ==========================
+Route::prefix('restaurants')->controller(Restaurant::class)->name('retaurant.')->group(function () {
+    Route::get('', 'index')->name('index')->middleware('rp:user');
+    Route::get('create', 'create')->name('create')->middleware('rp:admin');
+    Route::post('store', 'store')->name('store')->middleware('rp:admin');
+    Route::get('edit/{restaurant}', 'edit')->name('edit')->middleware('rp:admin');
+    Route::put('update/{restaurant}', 'update')->name('update')->middleware('rp:admin');
+    Route::post('delete/{restaurant}', 'destroy')->name('destroy')->middleware('rp:admin');
+    Route::get('show/{restaurant}', 'show')->name('show')->middleware('rp:user');
 });
 
 
