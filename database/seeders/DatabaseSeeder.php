@@ -19,21 +19,25 @@ class DatabaseSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        // // ========================== Country ==========================
-        // foreach (range(1, 10) as $_) {
-        //     $s_date = $faker->dateTimeBetween('-30 days', '+240 days');
-        //     DB::table('countries')->insert([
-        //         'name' => $faker->country,
-        //         's_time' => date_format($s_date, 'Y/m/d'),
-        //     ]);
-        // }
-    
+        // ========================== Restaurant ==========================
+
+        $names = ['Berneliu uzeiga', 'Juodas Vilkas', 'Balta Avele', 'Cepelinai Tau', 'Katmandu', 'Cili pica', 'Pienine', 'Bistro', 'Kultura'];
+
+        foreach (range(1, 10) as $_) {
+                DB::table('restaurants')->insert([
+                'name' => $names[rand(0, count($names) - 1)],
+                'city' => $faker->city,
+                'address' => $faker->address,
+                'work_time' => '11 - 22',
+            ]);
+        }
+
         // // ========================== Hotel ==========================
         // foreach (range(1, 10) as $_) {
         //     $hotels = ['Radisson Blue', 'Clarion', 'Grand Budapest', 'Old Town Hotel', 'Central Hotel', 'Scandic Hotel', 'Park Hotel', 'Grand Tower Hotel', 'Parken Inn'];
-    
+
         //     $photopath = 'http://localhost/bandom/public/images/hotels/';
-    
+
         //     DB::table('hotels')->insert([
         //         'name' => $hotels[rand(0, count($hotels) - 1)],
         //         'price' => rand(100, 500),
@@ -42,22 +46,22 @@ class DatabaseSeeder extends Seeder
         //         'country_id' => rand(1, 10),
         //     ]);
         // }
-    
+
         // ========================== USERS ==========================
-          DB::table('users')->insert([
+        DB::table('users')->insert([
             'name' => 'user',
             'email' => 'user@gmail.com',
             'password' => Hash::make('123'),
             'role' => 1,
         ]);
-    
+
         DB::table('users')->insert([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('123'),
             'role' => 10,
         ]);
-    
+
         DB::table('users')->insert([
             'name' => 'Gytis',
             'email' => 'leogytis@gmail.com',

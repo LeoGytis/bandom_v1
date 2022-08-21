@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Restaurant;
-use App\Http\Requests\StoreRestaurantRequest;
-use App\Http\Requests\UpdateRestaurantRequest;
+// use App\Http\Requests\StoreRestaurantRequest;
+// use App\Http\Requests\UpdateRestaurantRequest;
+use Illuminate\Http\Request;
 
 class RestaurantController extends Controller
 {
@@ -15,7 +16,8 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        //
+        $restaurants = Restaurant::all();
+        return view('restaurant.index', ['restaurants' => $restaurants]);
     }
 
     /**
@@ -25,7 +27,7 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        //
+        return view('restaurant.create');
     }
 
     /**
@@ -34,9 +36,15 @@ class RestaurantController extends Controller
      * @param  \App\Http\Requests\StoreRestaurantRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRestaurantRequest $request)
+    public function store(Request $request)
     {
-        //
+        $restaurant = new Restaurant;
+        $restaurant->name = $request->restaurant_name;
+        $restaurant->city = $request->restaurant_city;
+        $restaurant->address = $request->restaurant_address;
+        $restaurant->work_time = $request->restaurant_work_time;
+        $restaurant->save();
+        return redirect()->route('restaurant.index');
     }
 
     /**
@@ -68,7 +76,7 @@ class RestaurantController extends Controller
      * @param  \App\Models\Restaurant  $restaurant
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRestaurantRequest $request, Restaurant $restaurant)
+    public function update(Request $request)
     {
         //
     }
