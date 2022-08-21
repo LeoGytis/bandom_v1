@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RestaurantController;
-use App\Http\Controllers\HotelController as Hotel;
+use App\Http\Controllers\DishController;
 use App\Http\Controllers\OrderController;
 use App\Models\Restaurant;
 
@@ -27,27 +27,27 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 // ========================== Restaurant ==========================
 Route::prefix('restaurants')->controller(RestaurantController::class)->name('restaurant.')->group(function(){
-    Route::get('', 'index')->name('index');
-    Route::get('create', 'create')->name('create');
-    Route::post('store', 'store')->name('store');
-    Route::get('edit/{restaurant}', 'edit')->name('edit');
-    Route::post('update/{restaurant}', 'update')->name('update');
-    Route::post('delete/{restaurant}', 'destroy')->name('destroy');
-    Route::get('show/{restaurant}', 'show')->name('show');
+    Route::get('', 'index')->name('index')->middleware('rp:user');
+    Route::get('create', 'create')->name('create')->middleware('rp:admin');
+    Route::post('store', 'store')->name('store')->middleware('rp:admin');
+    Route::get('edit/{restaurant}', 'edit')->name('edit')->middleware('rp:admin');
+    Route::put('update/{restaurant}', 'update')->name('update')->middleware('rp:admin');
+    Route::post('delete/{restaurant}', 'destroy')->name('destroy')->middleware('rp:admin');
+    Route::get('show/{restaurant}', 'show')->name('show')->middleware('rp:user');
  });
  
 
 
-// ========================== Hotel ==========================
-Route::prefix('hotels')->controller(Hotel::class)->group(function () {
-    Route::get('', 'index')->name('hotel.index')->middleware('rp:user');
-    Route::get('create', 'create')->name('hotel.create')->middleware('rp:admin');
-    Route::post('store', 'store')->name('hotel.store')->middleware('rp:admin');
-    Route::get('edit/{hotel}', 'edit')->name('hotel.edit')->middleware('rp:admin');
-    Route::put('update/{hotel}', 'update')->name('hotel.update')->middleware('rp:admin');
-    Route::post('delete/{hotel}', 'destroy')->name('hotel.destroy')->middleware('rp:admin');
-    Route::get('show/{hotel}', 'show')->name('hotel.show')->middleware('rp:user');
-    Route::put('delete-picture/{hotel}', 'deletePicture')->name('hotels.delete-picture')->middleware('rp:admin');
+// ========================== Dish ==========================
+Route::prefix('dishes')->controller(DishController::class)->name('dish.')->group(function () {
+    Route::get('', 'index')->name('index')->middleware('rp:user');
+    Route::get('create', 'create')->name('create')->middleware('rp:admin');
+    Route::post('store', 'store')->name('store')->middleware('rp:admin');
+    Route::get('edit/{dish}', 'edit')->name('edit')->middleware('rp:admin');
+    Route::put('update/{dish}', 'update')->name('update')->middleware('rp:admin');
+    Route::post('delete/{dish}', 'destroy')->name('destroy')->middleware('rp:admin');
+    Route::get('show/{dish}', 'show')->name('show')->middleware('rp:user');
+    Route::put('delete-picture/{dish}', 'deletePicture')->name('delete-picture')->middleware('rp:admin');
 });
 
 

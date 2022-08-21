@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dish;
 use App\Http\Requests\StoreDishRequest;
 use App\Http\Requests\UpdateDishRequest;
+use Illuminate\Http\Request;
+use App\Models\Dish;
+use App\Models\Restaurant;
 
 class DishController extends Controller
 {
@@ -13,9 +15,27 @@ class DishController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $dishes = match ($request->sort) {
+            'price-asc' => Dish::orderBy('price', 'asc')->get(),
+            'price-desc' => Dish::orderBy('price', 'desc')->get(),
+            default => Dish::all()
+        };
+
+        if ($request->restaurant_id) {
+            $dishes = Dish::where('restaurant_id', $request->restaurant_id)->get();
+        }
+
+        if ($request->search) {
+            $dishes = Dish::where('dishes.name', 'like', '%'. $request->search . '%')->get();
+        }
+
+        // $dishes = Dish::all();
+        $restaurants = Restaurant::all();
+        $filter = (int) $request->restaurant_id;
+
+        return view('dish.index', ['dishes' => $dishes, 'restaurants' => $restaurants, 'filter' => $filter, 'search' => $request->search ?? '',]);
     }
 
     /**
@@ -25,7 +45,8 @@ class DishController extends Controller
      */
     public function create()
     {
-        //
+        $restaurants = Restaurant::all();
+        return view('dish.create', ['restaurants' => $restaurants]);
     }
 
     /**
@@ -34,9 +55,29 @@ class DishController extends Controller
      * @param  \App\Http\Requests\StoreDishRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreDishRequest $request)
+    public function store(Request $request)
     {
-        //
+        $dish = new Dish;
+        $dish->name = $request->dish_name;
+        $dish->price = $request->dish_price;
+
+        // ========================== Photo file ==========================
+
+        if ($request->file('dish_photo')) {
+
+            $photo = $request->file('dish_photo');
+            $ext = $photo->getClientOriginalExtension();  //get extention of the file
+            $name = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME); //original file name
+
+            $file = $name . '-' . rand(100, 111) . '.' . $ext;  //create new name for the file
+            $photo->move(public_path() . '/images', $file); //move file from tmp
+
+            $dish->photo = asset('/images') . '/' . $file; //read file path as url
+        }
+
+        $dish->restaurant_id = $request->restaurant_id;
+        $dish->save();
+        return redirect()->route('dish.index')->with('pop_message', 'Successfully Created!');
     }
 
     /**
@@ -58,7 +99,8 @@ class DishController extends Controller
      */
     public function edit(Dish $dish)
     {
-        //
+        $restaurants = Restaurant::all();
+        return view('dish.edit', ['dish' => $dish, 'restaurants' => $restaurants]);
     }
 
     /**
@@ -68,9 +110,37 @@ class DishController extends Controller
      * @param  \App\Models\Dish  $dish
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateDishRequest $request, Dish $dish)
+    public function update(Request $request, Dish $dish)
     {
-        //
+        $dish->name = $request->dish_name;
+        $dish->price = $request->dish_price;
+
+        // ========================== Photo file ==========================
+
+        if ($request->file('dish_photo')) {
+
+            $name = pathinfo($dish->photo, PATHINFO_FILENAME);
+            $ext = pathinfo($dish->photo, PATHINFO_EXTENSION);
+
+            $path = asset('/images') . '/' . $name . '.' . $ext;
+
+            if (file_exists($path)) {
+                unlink($path);
+            }
+
+            $photo = $request->file('dish_photo');
+            $ext = $photo->getClientOriginalExtension();  //get extention of the file
+            $name = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME); //original file name
+
+            $file = $name . '-' . rand(100, 999) . '.' . $ext;  //create new name for the file
+            $photo->move(public_path() . '/images', $file); //move file from tmp
+
+            $dish->photo = asset('/images') . '/' . $file; //read file path as url
+        }
+
+        $dish->restaurant_id = $request->restaurant_id;
+        $dish->save();
+        return redirect()->route('dish.index')->with('pop_message', 'Successfully edited!');
     }
 
     /**
@@ -81,6 +151,37 @@ class DishController extends Controller
      */
     public function destroy(Dish $dish)
     {
-        //
+
+        if ($dish->photo) {
+
+            $name = pathinfo($dish->photo, PATHINFO_FILENAME);
+            $ext = pathinfo($dish->photo, PATHINFO_EXTENSION);
+
+            $path = public_path() . '/images/' . $name . '.' . $ext;
+
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
+
+        $dish->delete();
+        return redirect()->route('dish.index')->with('pop_message', 'Successfully deleted!');
+    }
+
+    public function deletePicture(Dish $dish)
+    {
+        $name = pathinfo($dish->photo, PATHINFO_FILENAME);
+        $ext = pathinfo($dish->photo, PATHINFO_EXTENSION);
+
+        $path = public_path() . '/images/' . $name . '.' . $ext;
+
+        if (file_exists($path)) {
+            unlink($path);
+        }
+
+        $dish->photo = null;
+        $dish->save();
+
+        return redirect()->back()->with('pop_message', 'Dish have no photo now');
     }
 }

@@ -44,7 +44,7 @@ class RestaurantController extends Controller
         $restaurant->address = $request->restaurant_address;
         $restaurant->work_time = $request->restaurant_work_time;
         $restaurant->save();
-        return redirect()->route('restaurant.index');
+        return redirect()->route('restaurant.index')->with('pop_message', 'Successfully Created!');
     }
 
     /**
@@ -66,7 +66,7 @@ class RestaurantController extends Controller
      */
     public function edit(Restaurant $restaurant)
     {
-        //
+        return view('restaurant.edit', ['restaurant' => $restaurant]);
     }
 
     /**
@@ -76,9 +76,15 @@ class RestaurantController extends Controller
      * @param  \App\Models\Restaurant  $restaurant
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, Restaurant $restaurant)
     {
-        //
+        $restaurant->name = $request->restaurant_name;
+        $restaurant->city = $request->restaurant_city;
+        $restaurant->address = $request->restaurant_address;
+        $restaurant->work_time = $request->restaurant_work_time;
+        $restaurant->save();
+        return redirect()->route('restaurant.index')->with('pop_message', 'Successfully edited!');
+ 
     }
 
     /**
@@ -89,6 +95,11 @@ class RestaurantController extends Controller
      */
     public function destroy(Restaurant $restaurant)
     {
-        //
+        if (!$restaurant->dishes->count()) {
+            $restaurant->delete();
+            return redirect()->route('restaurant.index')->with('pop_message', 'Successfully deleted!');
+        }
+        return redirect()->back()->with('pop_message', 'This restaurant can not be deleted!');
+ 
     }
 }

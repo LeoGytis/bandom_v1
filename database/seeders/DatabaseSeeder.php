@@ -32,20 +32,19 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // // ========================== Hotel ==========================
-        // foreach (range(1, 10) as $_) {
-        //     $hotels = ['Radisson Blue', 'Clarion', 'Grand Budapest', 'Old Town Hotel', 'Central Hotel', 'Scandic Hotel', 'Park Hotel', 'Grand Tower Hotel', 'Parken Inn'];
+        // // ========================== Dishes ==========================
+        foreach (range(1, 10) as $_) {
+            $dishes_list = ['Cepelinai', 'Blynai', 'Pica', 'Karbonadatas', 'Pyragas', 'Ledai', 'Makaronai', 'Kepsnys', 'Saslykas', 'Koldunai', 'Ledu kokteilis'];
 
-        //     $photopath = 'http://localhost/bandom/public/images/hotels/';
+            $photopath = 'http://localhost/bandom_v1/public/images/dishes/';
 
-        //     DB::table('hotels')->insert([
-        //         'name' => $hotels[rand(0, count($hotels) - 1)],
-        //         'price' => rand(100, 500),
-        //         'photo' => $photopath . rand(1,9) . '.jpg',
-        //         'trip_time' => rand(7, 14),
-        //         'country_id' => rand(1, 10),
-        //     ]);
-        // }
+            DB::table('dishes')->insert([
+                'name' => $dishes_list[rand(0, count($dishes_list) - 1)],
+                'price' => rand(1, 20),
+                'photo' => $photopath . rand(1,10) . '.jpg',
+                'restaurant_id' => rand(1, 10),
+            ]);
+        }
 
         // ========================== USERS ==========================
         DB::table('users')->insert([

@@ -68,39 +68,39 @@
                             @endif
                         </li> --}}
 
-                        {{-- ========================== Country ========================== --}}
-                        {{-- <li class="nav-item dropdown">
+                        {{-- ========================== Restaurant ========================== --}}
+                        <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Countries
+                                Restaurants
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('country.index') }}">
-                                    Countries List
+                                <a class="dropdown-item" href="{{ route('restaurant.index') }}">
+                                    Restaurants List
                                 </a>
                                 @if (Auth::user()->role > 9)
-                                <a class="dropdown-item" href="{{ route('country.create') }}">
-                                    New Country
+                                <a class="dropdown-item" href="{{ route('restaurant.create') }}">
+                                    New Restaurant
                                 </a>
                                 @endif
                             </div>
-                        </li> --}}
+                        </li>
 
-                        {{-- ========================== Hotel ========================== --}}
-                        {{-- <li class="nav-item dropdown">
+                        {{-- ========================== Dish ========================== --}}
+                        <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Hotel
+                                Dishes
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('hotel.index') }}">
-                                    Hotels List
+                                <a class="dropdown-item" href="{{ route('dish.index') }}">
+                                    Dishes List
                                 </a>
                                 @if (Auth::user()->role > 9)
-                                <a class="dropdown-item" href="{{ route('hotel.create') }}">
-                                    New Hotel
+                                <a class="dropdown-item" href="{{ route('dish.create') }}">
+                                    New dish
                                 </a>
                                 @endif
                             </div>
-                        </li> --}}
+                        </li>
 
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
