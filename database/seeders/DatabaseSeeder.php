@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             DB::table('dishes')->insert([
                 'name' => $dishes_list[rand(0, count($dishes_list) - 1)],
                 'price' => rand(1, 20),
+                'rate' => 0,
                 'photo' => $photopath . rand(1,10) . '.jpg',
                 'restaurant_id' => rand(1, 10),
             ]);

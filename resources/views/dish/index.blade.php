@@ -55,15 +55,21 @@
                                 Pirce: {{$dish->price}}€<br>
                                 Restaurant: {{$dish->dishRestaurant->name}} <br>
                             </div>
-                            <div class="mt-3">
-                                {{-- <form method="post" action="{{route('order.add')}}">
+                                <form class="d-flex flex-row justify-content-start mt-3" method="post" action="{{route('dish.rate')}}">
                                     @csrf
                                     @method('post')
-                                    <input class="order-count" type="number" name="dishes_count">
+                                    <div class="rate-select">
+                                        <select class="form-select form-select-sm p-2" aria-label=".form-select-sm example" name="dish_rate">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
                                     <input type="hidden" value="{{$dish->id}}" name="dish_id">
-                                    <button class="btn btn-outline-success me-3" type="submit">Order</button>
-                                </form> --}}
-                            </div>
+                                    <button class="btn btn-success ms-1" type="submit">Rate it!</button>
+                                </form>
                             @if (Auth::user()->role > 9)
                             <div class="d-flex flex-row justify-content-start mt-1">
                                 <a class="btn btn-outline-success me-1" href="{{route('dish.edit',$dish)}}">EDIT</a><br>

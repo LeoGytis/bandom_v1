@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\RateController;
 use App\Models\Restaurant;
 
 /*
@@ -48,14 +49,16 @@ Route::prefix('dishes')->controller(DishController::class)->name('dish.')->group
     Route::post('delete/{dish}', 'destroy')->name('destroy')->middleware('rp:admin');
     Route::get('show/{dish}', 'show')->name('show')->middleware('rp:user');
     Route::put('delete-picture/{dish}', 'deletePicture')->name('delete-picture')->middleware('rp:admin');
+    Route::post('rate/', 'rateDish')->name('rate');
+
 });
 
 
-// ========================== Order ==========================
-Route::prefix('orders')->controller(OrderController::class)->name('order.')->group(function () {
-    Route::get('', 'index')->name('index')->middleware('rp:admin');
-    Route::post('add', 'add')->name('add');
-    Route::post('delete/{order}', 'destroy')->name('destroy')->middleware('rp:admin');
-    Route::put('status/{order}', 'setStatus')->name('status')->middleware('rp:admin');
-    Route::get('show', 'showMyOrders')->name('show');
-});
+// ========================== Rate ==========================
+// Route::prefix('orders')->controller(RateController::class)->name('rate.')->group(function () {
+//     // Route::get('', 'index')->name('index')->middleware('rp:admin');
+//     Route::post('add', 'add')->name('add');
+//     // Route::post('delete/{order}', 'destroy')->name('destroy')->middleware('rp:admin');
+//     // Route::put('status/{order}', 'setStatus')->name('status')->middleware('rp:admin');
+//     // Route::get('show', 'showMyOrders')->name('show');
+// });

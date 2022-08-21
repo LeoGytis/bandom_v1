@@ -28,7 +28,7 @@ class DishController extends Controller
         }
 
         if ($request->search) {
-            $dishes = Dish::where('dishes.name', 'like', '%'. $request->search . '%')->get();
+            $dishes = Dish::where('dishes.name', 'like', '%' . $request->search . '%')->get();
         }
 
         // $dishes = Dish::all();
@@ -183,5 +183,20 @@ class DishController extends Controller
         $dish->save();
 
         return redirect()->back()->with('pop_message', 'Dish have no photo now');
+    }
+
+    public function rateDish(Request $request)
+    {
+        $dish = Dish::where('id', $request->dish_id)->first();
+
+        if ($dish->rate <= 0) {
+            $dish->rate = $request->dish_rate;
+        } else {
+            $dish->rate = ($dish->rate + $request->dish_rate) / 2;
+        }
+
+        $dish->save();
+
+        return redirect()->route('dish.index')->with('pop_message', 'Successfully rated!');
     }
 }
